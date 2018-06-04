@@ -60,8 +60,8 @@ head(data)
 
 Here we can see that our data consists of quite a bit of information, sorted by the name of each country.
 
-select()
---------
+Getting data for our study
+--------------------------
 
 First let's begin by selecting the relevant data that we need to start out.
 
@@ -120,8 +120,8 @@ head(newDataPipe)
 
 Verbs provided by `dplyr` support both options that we just covered. It's up to your preference. However, in this demo we will use the pipe operator to familiarize you with its use.
 
-arrange()
----------
+Sorting data to have more valuable information first
+----------------------------------------------------
 
 Next, we need to know which countries have the most phones. We can accomplish this by using the `arrange()` function to sort our data.
 
@@ -142,8 +142,8 @@ newData %>%
 
 Apparently Monaco has more phones than people! That's quite interesting!
 
-distinct()
-----------
+Separating our data by region
+-----------------------------
 
 Now, let's find all of the regions that are considered by this data.
 
@@ -166,8 +166,8 @@ distinct(newData, Region)
 
 We see that we have 11 different regions.
 
-filter()
---------
+Taking out invalid data
+-----------------------
 
 Some of our data contains empty values. We don't want those to skew our results! Let's get rid of those unneeded data points.
 
@@ -195,23 +195,23 @@ nrow(newData)
 
 Here, we can see that we removed a total of 21 rows. That's quite a bit of data that could have skewed our results!
 
-summarise()
------------
+Intoducing the summarise() function
+-----------------------------------
 
 We want to look at the number of phones that regions have. However our data points are given to us by the country, not the region. Let's change that by using the `summarise()` function. This gives us a nice data frame of the function that we apply inside of it. Let's find out the average number of phones countries in the Eastern European region have.
 
 ``` r
 newData[grep("EASTERN EUROPE", newData$Region), ] %>%
-  summarise(mean(Phones..per.1000.))
+  summarise(sum(Phones..per.1000.))
 ```
 
-    ##   mean(Phones..per.1000.)
-    ## 1                297.0556
+    ##   sum(Phones..per.1000.)
+    ## 1                 2673.5
 
 This gives us the mean number of phones per 1000 people in the Eastern European region.
 
-group\_by()
------------
+Grouping our data by region
+---------------------------
 
 Now let's apply that same transformation to all of our data. `group_by()` is a great function for this! It follows a group-apply-combine process. First, `group_by()` splits our original data frame into multiple data frame based on our parameter. Then, it allows us to apply a transformation to each of those frames. Lastly, it puts all of these data frames back into one. Let's apply our `summarise()` transformation to our data frame called `avgDataByReg`.
 
@@ -251,8 +251,8 @@ head(avgDataByReg)
     ## 5 "LATIN AMER. & CARIB    "                11300.   90.5
     ## 6 "NEAR EAST                          "     2747.   78.1
 
-mutate()
---------
+Finalizing our data
+-------------------
 
 Now we get to the last function to cover on our list, `mutate()`. Using this, we can find the ratio of literacy percentage to phone ownership percentage. We do this by "mutating" the `avgLit` and `avgPhones` columns into a new column.
 
