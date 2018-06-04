@@ -27,11 +27,61 @@ head(newData$event_time)
 
     ## [1] "23:30:00" "01:00:00" "01:30:00" "00:00:00" "01:00:00" "02:00:00"
 
+unite()
+-------
+
+Here, we put two columns together by using the `unite()` function. Our data originally looks like this.
+
+``` r
+head(newData$venue_city)
+```
+
+    ## [1] MANSFIELD      QUINCY         PHOENIX        DALLAS        
+    ## [5] AUBURN         SAN BERNARDINO
+    ## 199 Levels: ABBOTSFORD AKRON ALBANY ALBUQUERQUE ALLEN ALPHARETTA ... YOUNGSTOWN
+
+``` r
+head(newData$venue_state)
+```
+
+    ## [1] MASSACHUSETTS WASHINGTON    ARIZONA       TEXAS         WASHINGTON   
+    ## [6] CALIFORNIA   
+    ## 48 Levels: ALABAMA ALBERTA ARIZONA ARKANSAS ... WISCONSIN
+
+Now we combine the two columns
+
+``` r
+testData <- unite(newData, "venue_loc", venue_city, venue_state, sep = ", ")
+head(testData$venue_loc)
+```
+
+    ## [1] "MANSFIELD, MASSACHUSETTS"   "QUINCY, WASHINGTON"        
+    ## [3] "PHOENIX, ARIZONA"           "DALLAS, TEXAS"             
+    ## [5] "AUBURN, WASHINGTON"         "SAN BERNARDINO, CALIFORNIA"
+
 gather()
 --------
 
-unite()
--------
+``` r
+testData <- spread(testData, timezn_nm, venue_loc)
+testData <- select(testData, seq(ncol(testData) - 3, ncol(testData)))
+head(testData)
+```
+
+    ##             CST                      EST              MST
+    ## 1          <NA> MANSFIELD, MASSACHUSETTS             <NA>
+    ## 2          <NA>                     <NA>             <NA>
+    ## 3          <NA>                     <NA> PHOENIX, ARIZONA
+    ## 4 DALLAS, TEXAS                     <NA>             <NA>
+    ## 5          <NA>                     <NA>             <NA>
+    ## 6          <NA>                     <NA>             <NA>
+    ##                          PST
+    ## 1                       <NA>
+    ## 2         QUINCY, WASHINGTON
+    ## 3                       <NA>
+    ## 4                       <NA>
+    ## 5         AUBURN, WASHINGTON
+    ## 6 SAN BERNARDINO, CALIFORNIA
 
 spread()
 --------

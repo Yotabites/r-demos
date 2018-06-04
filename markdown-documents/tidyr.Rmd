@@ -24,11 +24,26 @@ head(newData$event_dt)
 head(newData$event_time)
 ```
 
-##gather()
-
-
 ##unite()
+Here, we put two columns together by using the `unite()` function. Our data originally looks like this.
+```{r}
+head(newData$venue_city)
+head(newData$venue_state)
+```
 
+Now we combine the two columns 
+
+```{r}
+testData <- unite(newData, "venue_loc", venue_city, venue_state, sep = ", ")
+head(testData$venue_loc)
+```
+
+##gather()
+```{r}
+testData <- spread(testData, timezn_nm, venue_loc)
+testData <- select(testData, seq(ncol(testData) - 3, ncol(testData)))
+head(testData)
+```
 
 ##spread()
 
