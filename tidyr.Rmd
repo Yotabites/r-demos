@@ -1,0 +1,25 @@
+---
+title: 'Using tidyr: A Short Demo'
+author: "Shiv Sundar"
+date: "May 30, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyr)
+data <- iris
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Introduction
+In this demo, we will take a look at a package called `tidyr` and its most used functions. To do this, let's assume the role of 
+
+##gather()
+
+
+##unite()
+
+##separate()
+
+##spread()
+
