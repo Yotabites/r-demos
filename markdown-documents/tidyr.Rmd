@@ -13,15 +13,30 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 #Introduction
-In this demo, we will take a look at a package called `tidyr` and its most used functions. To do this, let's assume the role of 
+In this demo, we will take a look at a package called `tidyr` and its most used functions. To do this, let's assume the role of someone who is studying prices of tickets based on the state it is held in.
+
+##Getting our relevant data
+Here's what our data looks like currently:
+
+```{r}
+head(data)
+```
+
+That's a lot of data for our goal! We need to get rid of data that is unnecessary.
+
+```{r}
+newData <- data[ ,c("venue_loc", "trans_face_val_amt", "event_date_time", "timezn_nm")]
+```
 
 ##separate()
 The data in the column titled `event_date_time` contains repeat data from the `event_date` column. We can remove this duplicate data by using the `separate()` command to split it into two columns.
 
 ```{r}
-newData <- separate(data, event_date_time, c("event_dt", "event_time"), sep = " ")
-head(newData$event_dt)
-head(newData$event_time)
+newData <- (newData %>%
+  separate(event_date_time, c("event_date", "event_time"), sep = " ") %>%
+  separate(venue_loc, c("venue_city", "venue_state"), sep = ", "))
+
+head(newData)
 ```
 
 ##unite()
@@ -40,10 +55,17 @@ head(testData$venue_loc)
 
 ##gather()
 ```{r}
-testData <- spread(testData, timezn_nm, venue_loc)
+testData <- gather(testData, timezn_nm, venue_loc)
 testData <- select(testData, seq(ncol(testData) - 3, ncol(testData)))
 head(testData)
 ```
 
 ##spread()
 
+```{r}
+testData <- unique(testData)
+```
+
+unite venue state and venue city then spread location against time zone
+
+separate event time and date then gather
