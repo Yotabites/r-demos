@@ -34,7 +34,7 @@ The `all_equal()` function is used to compare two data frames. One can use this 
 
 ####Examples
 ```{r include=FALSE}
-worldCountries1 <- sample_n(worldCountries[ , c("Country", "Population", "Phones..per.1000.")], 15)
+worldCountries1 <- sample_n(worldCountries[ , c("Country", "Population", "Phones..per.1000.", "Region")], 15)
 worldCountriesMix <- worldCountries1[sample(nrow(worldCountries1)), sample(ncol(worldCountries1))]
 ```
 
@@ -114,7 +114,7 @@ coalesce(y, x)
 ```
 
 ###`arrange()`, but backwards!
-`desc()` is a function that is pretty straightforward. It takes every value in the vector and flips the sign. When this function is used in conjunction with `arrange()`, the vector returned by arrange is sorted in reverse order.
+`desc()` is a function that is pretty straightforward. It takes every value in the vector and flips the sign. When this function is used in conjunction with `arrange()`, the vector returned is sorted in reverse order.
 
 ####Usage
 `desc(vec)`
@@ -129,7 +129,95 @@ desc(worldCountries1$Phones..per.1000.) %>%
   head
 ```
 
+###Ew! I have replicated data in my table!
+A tool provided by `dplyr` that is frequently used for removing duplicate values is the `distinct()` function. It returns a vector with the duplicates removed
+
+####Usage
+`distinct(.data, ..., .keep_all = FALSE)`
+
+####Parameters
+* `.data`: the tibble to remove values from (at least one is required)
+* `...`: other variables to check for uniqueness
+* `.keep_all`: should all variables in `.data` be kept?
+
+####Usage
+```{r}
+worldCountriesTbl <- as_tibble(worldCountries)
+worldCountriesTbl %>%
+  distinct(Coastline..coast.area.ratio.) %>%
+  head
+```
+
+###I'm having issues with my `dplyr` installation! What do I do?
+`dr_dplyr()` is a maintenance tool provided by `dplyr` to diagnose common problems with the package itself. This function can sometimes show false errors, so only use it if there are problems.
+
+####Usage
+`dr_dplyr()`
+
+####Parameters
+**N/A**
+
+####Examples
+```{r}
+dr_dplyr()
+```
+
+
+###I need a more readable description of my tibble.
+`explain()` is a function that is similar to `print()` and `str()` but is more focused on human readability while still providing more details about the data.
+
+####Usage
+`explain(.data)`
+
+####Parameters
+* `.data`: data that needs explaining
+
+####Examples
+```{r}
+#need to fix this
+#explain(worldCountriesTbl)
+```
+
+###Is there an easy way to find elements that fit a certain condition?
+Well, of course there is! It's called the `filter()` function. It is different from using subsets (like `[]`) because it does not return `NA` values.
+
+####Usage
+`filter(.data, ...)`
+
+####Parameters
+* `.data`: data to pass through the filter
+* `...`: 
+
+####Examples
+```{r}
+head((worldCountries %>%
+  filter(between(GDP....per.capita., 2000, 5000)))[1])
+```
+
+###Grouping multiple rows together for batch operations
+
+
+####Usage
+
+
+####Parameters
+
+
+####Examples
+
+
 ###
+
+
+####Usage
+
+
+####Parameters
+
+
+####Examples
+
+
 ##Datasets provided by `dplyr`
 These datasets are bundled with the `dplyr` package for testing and manipulating.
 
@@ -152,11 +240,7 @@ case_when
 compute
 copy_to
 cumall
-distinct
 do
-dr_dplyr
-explain
-filter
 filter_all
 funs
 groups

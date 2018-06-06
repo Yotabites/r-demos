@@ -40,25 +40,39 @@ Here we see what the data looks like.
 head(worldCountries1)
 ```
 
-    ##            Country Population Phones..per.1000.
-    ## 120 Liechtenstein       33987             585.5
-    ## 1     Afghanistan    31056997               3.2
-    ## 70         France    60876136             586.4
-    ## 177         Samoa      176908              75.2
-    ## 212       Ukraine    46710816             259.9
-    ## 192     Sri Lanka    20222240              61.5
+    ##                   Country Population Phones..per.1000.
+    ## 52                  Cuba    11382820              74.7
+    ## 15          Bahamas. The      303770             460.6
+    ## 191                Spain    40397842             453.5
+    ## 80                Greece    10688058             589.7
+    ## 213 United Arab Emirates     2602713             475.3
+    ## 189              Somalia     8863338              11.3
+    ##                                  Region
+    ## 52              LATIN AMER. & CARIB    
+    ## 15              LATIN AMER. & CARIB    
+    ## 191 WESTERN EUROPE                     
+    ## 80  WESTERN EUROPE                     
+    ## 213 NEAR EAST                          
+    ## 189 SUB-SAHARAN AFRICA
 
 ``` r
 head(worldCountriesMix)
 ```
 
-    ##     Phones..per.1000. Population     Country
-    ## 217              62.9   27307134 Uzbekistan 
-    ## 77              667.9   82422299    Germany 
-    ## 61              131.8   78887007      Egypt 
-    ## 70              586.4   60876136     France 
-    ## 130             505.0     400214      Malta 
-    ## 198             153.8   18881361      Syria
+    ##     Population                              Region Phones..per.1000.
+    ## 80    10688058 WESTERN EUROPE                                  589.7
+    ## 15      303770             LATIN AMER. & CARIB                 460.6
+    ## 12    20264082 OCEANIA                                         565.5
+    ## 191   40397842 WESTERN EUROPE                                  453.5
+    ## 178      29251 WESTERN EUROPE                                  704.3
+    ## 118    3042004 SUB-SAHARAN AFRICA                                2.3
+    ##           Country
+    ## 80        Greece 
+    ## 15  Bahamas. The 
+    ## 12     Australia 
+    ## 191        Spain 
+    ## 178   San Marino 
+    ## 118      Liberia
 
 Here we test different variations of the function.
 
@@ -99,26 +113,40 @@ Data can be sorted by using the `arrange()` function. It sorts using by using th
 head(arrange(worldCountries1, Population))
 ```
 
-    ##          Country Population Phones..per.1000.
-    ## 1 Liechtenstein       33987             585.5
-    ## 2         Samoa      176908              75.2
-    ## 3 French Guiana      199509             255.6
-    ## 4       Vanuatu      208869              32.6
-    ## 5         Malta      400214             505.0
-    ## 6         Haiti     8308504              16.9
+    ##                 Country Population Phones..per.1000.
+    ## 1           San Marino       29251             704.3
+    ## 2               Monaco       32543            1035.6
+    ## 3         Bahamas. The      303770             460.6
+    ## 4 United Arab Emirates     2602713             475.3
+    ## 5              Jamaica     2758124             124.0
+    ## 6              Liberia     3042004               2.3
+    ##                                Region
+    ## 1 WESTERN EUROPE                     
+    ## 2 WESTERN EUROPE                     
+    ## 3             LATIN AMER. & CARIB    
+    ## 4 NEAR EAST                          
+    ## 5             LATIN AMER. & CARIB    
+    ## 6 SUB-SAHARAN AFRICA
 
 ``` r
 head(worldCountries1 %>%
   arrange(Phones..per.1000.))
 ```
 
-    ##        Country Population Phones..per.1000.
-    ## 1 Afghanistan    31056997               3.2
-    ## 2       Haiti     8308504              16.9
-    ## 3     Vanuatu      208869              32.6
-    ## 4   Sri Lanka    20222240              61.5
-    ## 5  Uzbekistan    27307134              62.9
-    ## 6       Samoa      176908              75.2
+    ##      Country Population Phones..per.1000.
+    ## 1   Liberia     3042004               2.3
+    ## 2   Somalia     8863338              11.3
+    ## 3      Cuba    11382820              74.7
+    ## 4   Jamaica     2758124             124.0
+    ## 5   Ecuador    13547510             125.6
+    ## 6 Venezuela    25730435             140.1
+    ##                                Region
+    ## 1 SUB-SAHARAN AFRICA                 
+    ## 2 SUB-SAHARAN AFRICA                 
+    ## 3             LATIN AMER. & CARIB    
+    ## 4             LATIN AMER. & CARIB    
+    ## 5             LATIN AMER. & CARIB    
+    ## 6             LATIN AMER. & CARIB
 
 We just saw the first use of the pipe operator! In English, we took the data frame `worldCountries1`, **then** arranged its data by the values in the `Phones..per.1000.` column. We can accomplish this task without using the pipe operator as well.
 
@@ -126,13 +154,20 @@ We just saw the first use of the pipe operator! In English, we took the data fra
 head(arrange(worldCountries1, Phones..per.1000.))
 ```
 
-    ##        Country Population Phones..per.1000.
-    ## 1 Afghanistan    31056997               3.2
-    ## 2       Haiti     8308504              16.9
-    ## 3     Vanuatu      208869              32.6
-    ## 4   Sri Lanka    20222240              61.5
-    ## 5  Uzbekistan    27307134              62.9
-    ## 6       Samoa      176908              75.2
+    ##      Country Population Phones..per.1000.
+    ## 1   Liberia     3042004               2.3
+    ## 2   Somalia     8863338              11.3
+    ## 3      Cuba    11382820              74.7
+    ## 4   Jamaica     2758124             124.0
+    ## 5   Ecuador    13547510             125.6
+    ## 6 Venezuela    25730435             140.1
+    ##                                Region
+    ## 1 SUB-SAHARAN AFRICA                 
+    ## 2 SUB-SAHARAN AFRICA                 
+    ## 3             LATIN AMER. & CARIB    
+    ## 4             LATIN AMER. & CARIB    
+    ## 5             LATIN AMER. & CARIB    
+    ## 6             LATIN AMER. & CARIB
 
 Functions provided by `dplyr` support both options that we just covered. It's up to your preference. However, in this demo we will use the pipe operator to familiarize you with its use.
 
@@ -157,15 +192,15 @@ newData <- sample_n(worldCountriesMix, 15)$Population
 head(newData)
 ```
 
-    ## [1]   199509 32930091   176908    33987   400214 27307134
+    ## [1] 20264082 40397842  3042004 25730435    29251 13547510
 
 ``` r
 newData%>%
   between(200000, 7500000)
 ```
 
-    ##  [1] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE
-    ## [12] FALSE FALSE FALSE FALSE
+    ##  [1] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
+    ## [12]  TRUE FALSE FALSE FALSE
 
 ### Getting rid of NAs and replacing them with values in a vector
 
@@ -198,7 +233,7 @@ coalesce(y, x)
 
 ### `arrange()`, but backwards!
 
-`desc()` is a function that is pretty straightforward. It takes every value in the vector and flips the sign. When this function is used in conjunction with `arrange()`, the vector returned by arrange is sorted in reverse order.
+`desc()` is a function that is pretty straightforward. It takes every value in the vector and flips the sign. When this function is used in conjunction with `arrange()`, the vector returned is sorted in reverse order.
 
 #### Usage
 
@@ -214,14 +249,14 @@ coalesce(y, x)
 head(worldCountries1$Phones..per.1000.)
 ```
 
-    ## [1] 585.5   3.2 586.4  75.2 259.9  61.5
+    ## [1]  74.7 460.6 453.5 589.7 475.3  11.3
 
 ``` r
 desc(worldCountries1$Phones..per.1000.) %>%
   head
 ```
 
-    ## [1] -585.5   -3.2 -586.4  -75.2 -259.9  -61.5
+    ## [1]  -74.7 -460.6 -453.5 -589.7 -475.3  -11.3
 
 ### Ew! I have replicated data in my table!
 
@@ -256,6 +291,87 @@ worldCountriesTbl %>%
     ## 5                         0.13
     ## 6                        59.8
 
+### I'm having issues with my `dplyr` installation! What do I do?
+
+`dr_dplyr()` is a maintenance tool provided by `dplyr` to diagnose common problems with the package itself. This function can sometimes show false errors, so only use it if there are problems.
+
+#### Usage
+
+`dr_dplyr()`
+
+#### Parameters
+
+**N/A**
+
+#### Examples
+
+``` r
+dr_dplyr()
+```
+
+### I need a more readable description of my tibble.
+
+`explain()` is a function that is similar to `print()` and `str()` but is more focused on human readability while still providing more details about the data.
+
+#### Usage
+
+`explain(.data)`
+
+#### Parameters
+
+-   `.data`: data that needs explaining
+
+#### Examples
+
+``` r
+#need to fix this
+#explain(worldCountriesTbl)
+```
+
+### Is there an easy way to find elements that fit a certain condition?
+
+Well, of course there is! It's called the `filter()` function. It is different from using subsets (like `[]`) because it does not return `NA` values.
+
+#### Usage
+
+`filter(.data, ...)`
+
+#### Parameters
+
+-   `.data`: data to pass through the filter
+-   `...`:
+
+#### Examples
+
+``` r
+head((worldCountries %>%
+  filter(between(GDP....per.capita., 2000, 5000)))[1])
+```
+
+    ##       Country
+    ## 1    Albania 
+    ## 2    Armenia 
+    ## 3 Azerbaijan 
+    ## 4     Belize 
+    ## 5    Bolivia 
+    ## 6      China
+
+### Grouping multiple rows together for batch operations
+
+#### Usage
+
+#### Parameters
+
+#### Examples
+
+### 
+
+#### Usage
+
+#### Parameters
+
+#### Examples
+
 Datasets provided by `dplyr`
 ----------------------------
 
@@ -271,4 +387,4 @@ These datasets are bundled with the `dplyr` package for testing and manipulating
 Other functions not covered
 ---------------------------
 
-all\_vars arrange\_all as.table.tbl\_cube as.tbl\_cube auto\_copy bind case\_when compute copy\_to cumall distinct do dr\_dplyr explain filter filter\_all funs groups group\_by group\_by\_all ident if\_else join join.tbl\_df lead-lag mutate n na\_if near nth n\_distinct order\_by pull ranking recode rowwise sample scoped select select\_all select\_vars setops slice sql src\_dbi summarise summarise\_all tally tbl tbl\_cube top\_n vars
+all\_vars arrange\_all as.table.tbl\_cube as.tbl\_cube auto\_copy bind case\_when compute copy\_to cumall do filter\_all funs groups group\_by group\_by\_all ident if\_else join join.tbl\_df lead-lag mutate n na\_if near nth n\_distinct order\_by pull ranking recode rowwise sample scoped select select\_all select\_vars setops slice sql src\_dbi summarise summarise\_all tally tbl tbl\_cube top\_n vars
