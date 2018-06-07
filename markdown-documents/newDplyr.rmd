@@ -6,7 +6,7 @@ output: rmarkdown::github_document
 ---
 
 ```{r setup, include=FALSE}
-worldCountries <- read.csv("worldCountries.csv")
+worldCountries <- read.csv("/Users/Shivkarthi/Documents/GitHub_Repos/RPackagesDemo/data/worldCountries.csv")
 library(dplyr)
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -195,16 +195,22 @@ head((worldCountries %>%
 ```
 
 ###Grouping multiple rows together for batch operations
-
+The `group_by()` function is used to easily perform operations such as `mean()` for all values that fall into a category. It is generally used with the `summarise()` function to show outputs by the generated groups.
 
 ####Usage
-
+`group_by(.data, ..., add = FALSE)`
 
 ####Parameters
-
+* `.data`: object to group variables together
+* `...`: variables that will be grouped together
+* `add`: should this operation override existing groups?
 
 ####Examples
-
+```{r}
+worldCountriesTbl %>%
+  group_by(Region) %>%
+  summarise(mean(Population))
+```
 
 ###
 

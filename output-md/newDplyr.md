@@ -40,39 +40,39 @@ Here we see what the data looks like.
 head(worldCountries1)
 ```
 
-    ##                   Country Population Phones..per.1000.
-    ## 52                  Cuba    11382820              74.7
-    ## 15          Bahamas. The      303770             460.6
-    ## 191                Spain    40397842             453.5
-    ## 80                Greece    10688058             589.7
-    ## 213 United Arab Emirates     2602713             475.3
-    ## 189              Somalia     8863338              11.3
+    ##          Country Population Phones..per.1000.
+    ## 124   Macedonia     2050554             260.0
+    ## 219   Venezuela    25730435             140.1
+    ## 108       Kenya    34707817               8.1
+    ## 31     Bulgaria     7385367             336.3
+    ## 163 Philippines    89468677              38.4
+    ## 78        Ghana    22409572              14.4
     ##                                  Region
-    ## 52              LATIN AMER. & CARIB    
-    ## 15              LATIN AMER. & CARIB    
-    ## 191 WESTERN EUROPE                     
-    ## 80  WESTERN EUROPE                     
-    ## 213 NEAR EAST                          
-    ## 189 SUB-SAHARAN AFRICA
+    ## 124 EASTERN EUROPE                     
+    ## 219             LATIN AMER. & CARIB    
+    ## 108 SUB-SAHARAN AFRICA                 
+    ## 31  EASTERN EUROPE                     
+    ## 163       ASIA (EX. NEAR EAST)         
+    ## 78  SUB-SAHARAN AFRICA
 
 ``` r
 head(worldCountriesMix)
 ```
 
-    ##     Population                              Region Phones..per.1000.
-    ## 80    10688058 WESTERN EUROPE                                  589.7
-    ## 15      303770             LATIN AMER. & CARIB                 460.6
-    ## 12    20264082 OCEANIA                                         565.5
-    ## 191   40397842 WESTERN EUROPE                                  453.5
-    ## 178      29251 WESTERN EUROPE                                  704.3
-    ## 118    3042004 SUB-SAHARAN AFRICA                                2.3
-    ##           Country
-    ## 80        Greece 
-    ## 15  Bahamas. The 
-    ## 12     Australia 
-    ## 191        Spain 
-    ## 178   San Marino 
-    ## 118      Liberia
+    ##     Phones..per.1000. Population                              Region
+    ## 219             140.1   25730435             LATIN AMER. & CARIB    
+    ## 80              589.7   10688058 WESTERN EUROPE                     
+    ## 31              336.3    7385367 EASTERN EUROPE                     
+    ## 75              244.3    1428757 NEAR EAST                          
+    ## 122             515.4     474413 WESTERN EUROPE                     
+    ## 108               8.1   34707817 SUB-SAHARAN AFRICA                 
+    ##         Country
+    ## 219  Venezuela 
+    ## 80      Greece 
+    ## 31    Bulgaria 
+    ## 75  Gaza Strip 
+    ## 122 Luxembourg 
+    ## 108      Kenya
 
 Here we test different variations of the function.
 
@@ -113,40 +113,40 @@ Data can be sorted by using the `arrange()` function. It sorts using by using th
 head(arrange(worldCountries1, Population))
 ```
 
-    ##                 Country Population Phones..per.1000.
-    ## 1           San Marino       29251             704.3
-    ## 2               Monaco       32543            1035.6
-    ## 3         Bahamas. The      303770             460.6
-    ## 4 United Arab Emirates     2602713             475.3
-    ## 5              Jamaica     2758124             124.0
-    ## 6              Liberia     3042004               2.3
+    ##         Country Population Phones..per.1000.
+    ## 1        Malta      400214             505.0
+    ## 2   Luxembourg      474413             515.4
+    ## 3   Gaza Strip     1428757             244.3
+    ## 4    Macedonia     2050554             260.0
+    ## 5     Mongolia     2832224              55.1
+    ## 6 Turkmenistan     5042920              74.6
     ##                                Region
     ## 1 WESTERN EUROPE                     
     ## 2 WESTERN EUROPE                     
-    ## 3             LATIN AMER. & CARIB    
-    ## 4 NEAR EAST                          
-    ## 5             LATIN AMER. & CARIB    
-    ## 6 SUB-SAHARAN AFRICA
+    ## 3 NEAR EAST                          
+    ## 4 EASTERN EUROPE                     
+    ## 5       ASIA (EX. NEAR EAST)         
+    ## 6                C.W. OF IND. STATES
 
 ``` r
 head(worldCountries1 %>%
   arrange(Phones..per.1000.))
 ```
 
-    ##      Country Population Phones..per.1000.
-    ## 1   Liberia     3042004               2.3
-    ## 2   Somalia     8863338              11.3
-    ## 3      Cuba    11382820              74.7
-    ## 4   Jamaica     2758124             124.0
-    ## 5   Ecuador    13547510             125.6
-    ## 6 Venezuela    25730435             140.1
+    ##        Country Population Phones..per.1000.
+    ## 1      Rwanda     8648248               2.7
+    ## 2       Kenya    34707817               8.1
+    ## 3       Ghana    22409572              14.4
+    ## 4  Tajikistan     7320815              33.5
+    ## 5 Philippines    89468677              38.4
+    ## 6    Mongolia     2832224              55.1
     ##                                Region
     ## 1 SUB-SAHARAN AFRICA                 
     ## 2 SUB-SAHARAN AFRICA                 
-    ## 3             LATIN AMER. & CARIB    
-    ## 4             LATIN AMER. & CARIB    
-    ## 5             LATIN AMER. & CARIB    
-    ## 6             LATIN AMER. & CARIB
+    ## 3 SUB-SAHARAN AFRICA                 
+    ## 4                C.W. OF IND. STATES 
+    ## 5       ASIA (EX. NEAR EAST)         
+    ## 6       ASIA (EX. NEAR EAST)
 
 We just saw the first use of the pipe operator! In English, we took the data frame `worldCountries1`, **then** arranged its data by the values in the `Phones..per.1000.` column. We can accomplish this task without using the pipe operator as well.
 
@@ -154,20 +154,20 @@ We just saw the first use of the pipe operator! In English, we took the data fra
 head(arrange(worldCountries1, Phones..per.1000.))
 ```
 
-    ##      Country Population Phones..per.1000.
-    ## 1   Liberia     3042004               2.3
-    ## 2   Somalia     8863338              11.3
-    ## 3      Cuba    11382820              74.7
-    ## 4   Jamaica     2758124             124.0
-    ## 5   Ecuador    13547510             125.6
-    ## 6 Venezuela    25730435             140.1
+    ##        Country Population Phones..per.1000.
+    ## 1      Rwanda     8648248               2.7
+    ## 2       Kenya    34707817               8.1
+    ## 3       Ghana    22409572              14.4
+    ## 4  Tajikistan     7320815              33.5
+    ## 5 Philippines    89468677              38.4
+    ## 6    Mongolia     2832224              55.1
     ##                                Region
     ## 1 SUB-SAHARAN AFRICA                 
     ## 2 SUB-SAHARAN AFRICA                 
-    ## 3             LATIN AMER. & CARIB    
-    ## 4             LATIN AMER. & CARIB    
-    ## 5             LATIN AMER. & CARIB    
-    ## 6             LATIN AMER. & CARIB
+    ## 3 SUB-SAHARAN AFRICA                 
+    ## 4                C.W. OF IND. STATES 
+    ## 5       ASIA (EX. NEAR EAST)         
+    ## 6       ASIA (EX. NEAR EAST)
 
 Functions provided by `dplyr` support both options that we just covered. It's up to your preference. However, in this demo we will use the pipe operator to familiarize you with its use.
 
@@ -192,15 +192,15 @@ newData <- sample_n(worldCountriesMix, 15)$Population
 head(newData)
 ```
 
-    ## [1] 20264082 40397842  3042004 25730435    29251 13547510
+    ## [1]  5042920   474413 10688058  7385367  8648248   400214
 
 ``` r
 newData%>%
   between(200000, 7500000)
 ```
 
-    ##  [1] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE
-    ## [12]  TRUE FALSE FALSE FALSE
+    ##  [1]  TRUE  TRUE FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE
+    ## [12] FALSE FALSE FALSE  TRUE
 
 ### Getting rid of NAs and replacing them with values in a vector
 
@@ -249,14 +249,14 @@ coalesce(y, x)
 head(worldCountries1$Phones..per.1000.)
 ```
 
-    ## [1]  74.7 460.6 453.5 589.7 475.3  11.3
+    ## [1] 260.0 140.1   8.1 336.3  38.4  14.4
 
 ``` r
 desc(worldCountries1$Phones..per.1000.) %>%
   head
 ```
 
-    ## [1]  -74.7 -460.6 -453.5 -589.7 -475.3  -11.3
+    ## [1] -260.0 -140.1   -8.1 -336.3  -38.4  -14.4
 
 ### Ew! I have replicated data in my table!
 
@@ -358,11 +358,40 @@ head((worldCountries %>%
 
 ### Grouping multiple rows together for batch operations
 
+The `group_by()` function is used to easily perform operations such as `mean()` for all values that fall into a category. It is generally used with the `summarise()` function to show outputs by the generated groups.
+
 #### Usage
+
+`group_by(.data, ..., add = FALSE)`
 
 #### Parameters
 
+-   `.data`: object to group variables together
+-   `...`: variables that will be grouped together
+-   `add`: should this operation override existing groups?
+
 #### Examples
+
+``` r
+worldCountriesTbl %>%
+  group_by(Region) %>%
+  summarise(mean(Population))
+```
+
+    ## # A tibble: 11 x 2
+    ##    Region                                `mean(Population)`
+    ##    <fct>                                              <dbl>
+    ##  1 "ASIA (EX. NEAR EAST)         "               131713651.
+    ##  2 "BALTICS                            "           2394991.
+    ##  3 "C.W. OF IND. STATES "                         23340129 
+    ##  4 "EASTERN EUROPE                     "           9992893.
+    ##  5 "LATIN AMER. & CARIB    "                      12484991.
+    ##  6 "NEAR EAST                          "          12191774.
+    ##  7 "NORTHERN AFRICA                    "          26901189.
+    ##  8 "NORTHERN AMERICA                   "          66334461.
+    ##  9 "OCEANIA                            "           1577698.
+    ## 10 "SUB-SAHARAN AFRICA                 "          14694843.
+    ## 11 "WESTERN EUROPE                     "          14155000.
 
 ### 
 
