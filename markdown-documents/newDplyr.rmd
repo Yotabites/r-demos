@@ -212,6 +212,184 @@ worldCountriesTbl %>%
   summarise(mean(Population))
 ```
 
+###Joining multiple tbls into one
+Sometimes you have two tbls with related data. You could continually perform operations by referring to each separately, but one can use the `join()` function to place them into one.
+
+####Usage
+`inner_join(left, right, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ...)`
+`left_join(left, right, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ...)`
+`right_join(left, right, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ...)`
+`full_join(left, right, by = NULL, copy = FALSE, suffix = c(".x", ".y"), ...)`
+`semi_join(left, right, by = NULL, copy = FALSE, ...)`
+`anti_join(left, right, by = NULL, copy = FALSE, ...)`
+
+####Parameters
+* `left`: a tbl 
+* `right`: a tbl
+* `by`: a character vector of column names to join by. if this remains `NULL`, then this function will join the tbls by columns that have the same name.
+* `copy`: if `TRUE`, then `right` will be copied into the same data source as `left`
+* `suffix`: specify in the output whether there are any other duplicate columns that weren't joined
+
+####Examples
+```{r}
+worldCountriesNew <- worldCountries[ , c("Area..sq..mi..", "Net.migration", "Arable....")]
+worldCountries1 <- worldCountries[ , c("Other....", "Region", "Crops....", "Arable....", "Phones..per.1000.", "Population")]
+head(full_join(worldCountries1, worldCountriesNew))
+```
+
+###I need to add some extra columns based on existing data for future use
+The `mutate()` function is great for creating extra columns in a data frame 
+
+####Usage
+
+
+####Parameters
+
+
+####Examples
+```{r}
+head(worldCountries1 %>%
+  mutate("Total Phones" = Phones..per.1000. * Population * 1000))
+```
+
+###
+n()
+
+####Usage
+
+
+####Parameters
+
+
+####Examples
+```{r}
+worldCountries %>%
+  summarise(n())
+worldCountries1 %>%
+  summarise(n())
+```
+
+###
+na_if()
+
+####Usage
+
+
+####Parameters
+
+
+####Examples
+```{r}
+x <- c(1:7, 3, 3)
+x <- sample(x)
+na_if(x, 3)
+```
+
+###
+
+
+####Usage
+
+
+####Parameters
+
+
+####Examples
+```{r}
+y <- (x + .073)
+near(x, y)
+y <- (x + .000000003)
+near(x, y)
+```
+
+###
+
+
+####Usage
+
+
+####Parameters
+
+
+####Examples
+```{r}
+n_distinct(x)
+```
+
+###
+
+
+####Usage
+
+
+####Parameters
+
+
+####Examples
+```{r}
+summarise(starwars, n())
+```
+
+###
+
+
+####Usage
+
+
+####Parameters
+
+
+####Examples
+```{r}
+head(worldCountries %>%
+       pull(Population))
+```
+
+###
+
+
+####Usage
+
+
+####Parameters
+
+
+####Examples
+```{r}
+head(x)
+y <- sample(x)
+head(y)
+```
+
+###
+
+
+####Usage
+
+
+####Parameters
+
+
+####Examples
+```{r}
+head(select(sample_n(starwars, 6), c("name", "species")))
+```
+
+###
+
+
+####Usage
+
+
+####Parameters
+
+
+####Examples
+```{r}
+head(starwars)
+slice(starwars, c(1, 3, 4))
+```
+
 ###
 
 
@@ -223,6 +401,38 @@ worldCountriesTbl %>%
 
 ####Examples
 
+###
+
+
+####Usage
+
+
+####Parameters
+
+
+####Examples
+
+###
+
+
+####Usage
+
+
+####Parameters
+
+
+####Examples
+
+###
+
+
+####Usage
+
+
+####Parameters
+
+
+####Examples
 
 ##Datasets provided by `dplyr`
 These datasets are bundled with the `dplyr` package for testing and manipulating.
@@ -250,31 +460,23 @@ do
 filter_all
 funs
 groups
-group_by
 group_by_all
 ident
 if_else
-join
 join.tbl_df
 lead-lag
 mutate
-n
 na_if
 near
 nth
-n_distinct
 order_by
-pull
 ranking
 recode
 rowwise
-sample
 scoped
-select
 select_all
 select_vars
 setops
-slice
 sql
 src_dbi
 summarise
@@ -283,4 +485,5 @@ tally
 tbl
 tbl_cube
 top_n
+ungroup
 vars

@@ -8,12 +8,18 @@ output: rmarkdown::github_document
 ```{r setup, include=FALSE}
 library(tidyr)
 library(dplyr)
-data <- read.csv("sales.csv")
+data <- read.csv("../data/sleepData.csv")
+data <- data %>%
+  drop_na(vore)
+data <- data %>%
+  mutate("rem_ratio" = sleep_rem/sleep_total) %>%
+  select(-sleep_rem) %>%
+  unite("latin_name", c("genus", "order"), sep = " ", remove = TRUE)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 #Introduction
-In this demo, we will take a look at a package called `tidyr` and its most used functions. To do this, let's assume the role of someone who is studying prices of tickets based on the state it is held in.
+In this demo, we will take a look at a package called `tidyr` and its most used functions. `tidyr` is a tool used for cleaning up data for ease of use later. 
 
 ##Getting our relevant data
 Here's what our data looks like currently:
@@ -22,50 +28,42 @@ Here's what our data looks like currently:
 head(data)
 ```
 
-That's a lot of data for our goal! We need to get rid of data that is unnecessary.
-
-```{r}
-newData <- data[ ,c("venue_loc", "trans_face_val_amt", "event_date_time", "timezn_nm")]
-```
+This data, while mostly organized, is not "clean". We can use the `tidyr` package to accomplish this goal.
 
 ##separate()
-The data in the column titled `event_date_time` contains repeat data from the `event_date` column. We can remove this duplicate data by using the `separate()` command to split it into two columns.
-
+In this data, the `latin_name` column has data that we can split using the `separate()` function. This way, it will be easier to find out how many _genera_ fall into each diet type.
 ```{r}
-newData <- (newData %>%
-  separate(event_date_time, c("event_date", "event_time"), sep = " ") %>%
-  separate(venue_loc, c("venue_city", "venue_state"), sep = ", "))
-
-head(newData)
+data <- data %>%
+  separate(latin_name, c("genus", "order"), sep = " ", remove = TRUE)
+head(data)
 ```
 
 ##unite()
-Here, we put two columns together by using the `unite()` function. Our data originally looks like this.
+Here, we put two columns together by using the `unite()` function. Our data originally looks like this. 
 ```{r}
-head(newData$venue_city)
-head(newData$venue_state)
+head(data$vore)
 ```
 
-Now we combine the two columns 
+The formatting of this data isn't easy to understand. What we can do is create a column of the same  
 
 ```{r}
-testData <- unite(newData, "venue_loc", venue_city, venue_state, sep = ", ")
-head(testData$venue_loc)
+data$suffix = "vore"
+(data <- data %>%
+  unite("diet", vore, suffix, sep = "", remove = TRUE)) %>%
+  head()
+```
+
+##spread()
+Now, let's say that we want to find out which _genera_ fall under a type of diet. We can do this by "spreading" the _genera_ against the diet type.
+
+```{r}
+data %>%
+  spread(diet, order) %>%
+  select(name, ends_with("vore"))
 ```
 
 ##gather()
 ```{r}
-testData <- gather(testData, timezn_nm, venue_loc)
-testData <- select(testData, seq(ncol(testData) - 3, ncol(testData)))
-head(testData)
+
 ```
 
-##spread()
-
-```{r}
-testData <- unique(testData)
-```
-
-unite venue state and venue city then spread location against time zone
-
-separate event time and date then gather

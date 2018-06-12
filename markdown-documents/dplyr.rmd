@@ -1,0 +1,134 @@
+---
+title: "Using dplyr: A Short Demo"
+author: "Shiv Sundar"
+date: "May 22, 2018"
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+data <- read.csv("worldCountries.csv")
+knitr::opts_chunk$set(echo = TRUE)
+```
+#Introduction
+In this demo, let's pretend that our research question is whether ownership of phones and literacy rates are related when looking at regions. For our research, we will apply some transformations to our data and clean it up to get valid data. We'd probably be laughed at by the research community if we used unnecessary or skewed data in our research.
+
+##Important Information
+One of the most used tools provided by `dplyr` is the pipe (`%>%`) operator. We can use it to chain together multiple functions. It's kind of like saying: do this, **then** do this, **then** do this. We'll cover the use and syntax for it as we go.
+
+#Basic functions in `dplyr`
+Let's have a quick look at our data.
+
+```{r}
+head(data)
+```
+
+Here we can see that our data consists of quite a bit of information, sorted by the name of each country.
+
+##Getting data for our study
+First let's begin by selecting the relevant data that we need to start out.
+
+```{r}
+newData <- select(data, Country, Phones..per.1000., Region, Literacy....)
+```
+
+We just placed the relevant data for our question in a new data frame, `newData`. Let's check out our new data frame.
+
+```{r}
+head(newData)
+```
+
+Now let's take a quick look at how we can accomplish this same call using the pipe operator.
+
+```{r}
+newDataPipe <- data %>%
+  select(Country, Phones..per.1000., Region, Literacy....)
+```
+
+Here we see how the pipe operator works. In English, we took the data frame `data`, **then** selected the relevant columns, and placed it into the data frame `newDataPipe`. Let's look at this data frame. Notice that it is the exact same as `newData`.
+
+```{r}
+head(newDataPipe)
+```
+
+Verbs provided by `dplyr` support both options that we just covered. It's up to your preference. However, in this demo we will use the pipe operator to familiarize you with its use.
+
+##Sorting data to have more valuable information first
+Next, we need to know which countries have the most phones. We can accomplish this by using the `arrange()` function to sort our data.
+
+```{r}
+newData %>%
+  arrange(desc(Phones..per.1000.)) %>%
+  select(Country, Phones..per.1000.) %>%
+  head
+```
+
+Apparently Monaco has more phones than people! That's quite interesting!
+
+##Separating our data by region
+Now, let's find all of the regions that are considered by this data.
+
+```{r}
+distinct(newData, Region)
+```
+
+We see that we have 11 different regions.
+
+##Taking out invalid data
+Some of our data contains empty values. We don't want those to skew our results! Let's get rid of those unneeded data points. 
+
+```{r}
+newData <- newData %>%
+  filter(!is.na(Phones..per.1000.)) %>%
+  filter(!is.na(Country)) %>%
+  filter(!is.na(Literacy....)) %>%
+  filter(!is.na(Region))
+```
+
+Now let's look at what happened in this code. 
+
+```{r}
+nrow(newDataPipe)
+nrow(newData)
+```
+
+Here, we can see that we removed a total of `r nrow(newDataPipe)-nrow(newData)` rows. That's quite a bit of data that could have skewed our results!
+
+##Introducing the summarise() function
+We want to look at the number of phones that regions have. However our data points are given to us by the country, not the region. Let's change that by using the `summarise()` function. This gives us a nice data frame of the function that we apply inside of it. Let's find out the average number of phones countries in the Eastern European region have.
+
+```{r}
+newData[grep("EASTERN EUROPE", newData$Region), ] %>%
+  summarise(sum(Phones..per.1000.))
+```
+
+This gives us the mean number of phones per 1000 people in the Eastern European region.
+
+##Grouping our data by region
+Now let's apply that same transformation to all of our data. `group_by()` is a great function for this! It follows a group-apply-combine process. First, `group_by()` splits our original data frame into multiple data frame based on our parameter. Then, it allows us to apply a transformation to each of those frames. Lastly, it puts all of these data frames back into one. Let's apply our `summarise()` transformation to our data frame called `avgDataByReg`.
+
+```{r}
+avgDataByReg <- newData %>%
+  group_by(Region) %>%
+  summarise(avgPhones=sum(Phones..per.1000.))
+head(avgDataByReg)
+```
+
+Now, let's do the same to our literacy rates. 
+
+```{r}
+avgDataByReg$avgLit = (newData %>%
+  group_by(Region) %>%
+  summarise(avgLit = mean(Literacy....)))$avgLit
+head(avgDataByReg)
+```
+
+##Finalizing our data
+Now we get to the last function to cover on our list, `mutate()`. Using this, we can find the ratio of literacy percentage to phone ownership percentage. We do this by "mutating" the `avgLit` and `avgPhones` columns into a new column. 
+
+```{r}
+avgDataByReg %>%
+  mutate(litToPhone = avgLit / (avgPhones/10))
+```
+
+This shows us that in certain regions, such as Northern Africa, a larger ratio of people can read than own phones. In the other end, there are many regions that have a smaller portion of people that can read compared to phones owned.
