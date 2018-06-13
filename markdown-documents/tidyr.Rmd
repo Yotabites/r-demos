@@ -13,8 +13,10 @@ data <- data %>%
   drop_na(vore)
 data <- data %>%
   mutate("rem_ratio" = sleep_rem/sleep_total) %>%
-  select(-sleep_rem) %>%
-  unite("latin_name", c("genus", "order"), sep = " ", remove = TRUE)
+  select(-sleep_rem, -genus, -order)
+worldCountries <- read.csv("../data/worldCountries.csv") %>%
+  select(Country, Area..sq..mi.., Arable...., Crops...., Other....) %>%
+  gather(key = "Land Type (%)", value = "Measurement", Area..sq..mi.., Arable...., Crops...., Other....)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -34,12 +36,13 @@ This data, while mostly organized, is not "clean". We can use the `tidyr` packag
 In this data, the `latin_name` column has data that we can split using the `separate()` function. This way, it will be easier to find out how many _genera_ fall into each diet type.
 ```{r}
 data <- data %>%
-  separate(latin_name, c("genus", "order"), sep = " ", remove = TRUE)
+  separate(order_genus, c("genus", "order"), sep = ", ", remove = TRUE)
 head(data)
 ```
 
 ##unite()
-Here, we put two columns together by using the `unite()` function. Our data originally looks like this. 
+Here, we put two columns together by using the `unite()` function. Our data originally looks like this.
+
 ```{r}
 head(data$vore)
 ```
@@ -48,22 +51,32 @@ The formatting of this data isn't easy to understand. What we can do is create a
 
 ```{r}
 data$suffix = "vore"
-(data <- data %>%
-  unite("diet", vore, suffix, sep = "", remove = TRUE)) %>%
-  head()
+data <- data %>%
+  unite("diet", vore, suffix, sep = "", remove = TRUE)
+head(data)
 ```
 
 ##spread()
-Now, let's say that we want to find out which _genera_ fall under a type of diet. We can do this by "spreading" the _genera_ against the diet type.
+Looking at our `worldCountries` data frame, we find that it is extremely long and contains repeated observations
 
 ```{r}
-data %>%
-  spread(diet, order) %>%
-  select(name, ends_with("vore"))
+filter(worldCountries, Country %in% levels(worldCountries$Country)[1:4])
 ```
 
-##gather()
-```{r}
+To fix this, we can use the `spread()` function. 
 
+```{r}
+worldCountriesWide <- worldCountries %>%
+  spread(`Land Type (%)`, Measurement)
+head(worldCountriesWide)
+```
+
+In the previous example, we saw a way to convert a _long_ data frame to a _wide_ data frame. We can do the exact opposite with the `gather()` function. 
+##gather()
+
+```{r}
+worldCountriesLong <- worldCountriesWide %>%
+  gather("Land Type (%)", "Measurement", -Country)
+head(worldCountriesLong)
 ```
 
