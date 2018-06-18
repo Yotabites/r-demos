@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 #Introduction
-In this demo, we will take a look at a package called `tidyr` and its most used functions. `tidyr` is a tool used for cleaning up data for ease of use later. 
+In this demo, we will take a look at a package called `tidyr` and its most used functions. `tidyr` is a tool used for cleaning up data for ease of use. 
 
 ##Getting our relevant data
 Here's what our data looks like currently:
@@ -30,24 +30,25 @@ Here's what our data looks like currently:
 head(data)
 ```
 
-This data, while mostly organized, is not "clean". We can use the `tidyr` package to accomplish this goal.
+This data, while mostly organized, is not "clean". We will go through the process of "cleaning" up this data, and cover the most used data manipulation functions provided by `tidyr`.
 
-##separate()
-In this data, the `latin_name` column has data that we can split using the `separate()` function. This way, it will be easier to find out how many _genera_ fall into each diet type.
+##Splitting up multiple observations in one column.
+In this data, the `order_genus` column has data that we can split using the `separate()` function. This way, it will be easier to sort the data by relevant values.
+
 ```{r}
 data <- data %>%
   separate(order_genus, c("genus", "order"), sep = ", ", remove = TRUE)
 head(data)
 ```
 
-##unite()
+##Placing related observations together
 Here, we put two columns together by using the `unite()` function. Our data originally looks like this.
 
 ```{r}
 head(data$vore)
 ```
 
-The formatting of this data isn't easy to understand. What we can do is create a column of the same  
+The formatting of this data isn't easy to understand. What we can do is create a column of the suffix that we want to add to our observation, and then combine them using the `unite()` function.
 
 ```{r}
 data$suffix = "vore"
@@ -56,8 +57,8 @@ data <- data %>%
 head(data)
 ```
 
-##spread()
-Looking at our `worldCountries` data frame, we find that it is extremely long and contains repeated observations
+##Changing _long_ data to _wide_
+Looking at our `worldCountries` data frame, we find that it is extremely long and contains repeated observations.
 
 ```{r}
 filter(worldCountries, Country %in% levels(worldCountries$Country)[1:4])
@@ -71,12 +72,10 @@ worldCountriesWide <- worldCountries %>%
 head(worldCountriesWide)
 ```
 
-In the previous example, we saw a way to convert a _long_ data frame to a _wide_ data frame. We can do the exact opposite with the `gather()` function. 
-##gather()
+Opposite to the `spread()` function, we can make _wide_ data into _long_ data using the `gather()` function.
 
 ```{r}
 worldCountriesLong <- worldCountriesWide %>%
   gather("Land Type (%)", "Measurement", -Country)
 head(worldCountriesLong)
 ```
-

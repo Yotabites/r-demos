@@ -6,7 +6,7 @@ May 30, 2018
 Introduction
 ============
 
-In this demo, we will take a look at a package called `tidyr` and its most used functions. `tidyr` is a tool used for cleaning up data for ease of use later.
+In this demo, we will take a look at a package called `tidyr` and its most used functions. `tidyr` is a tool used for cleaning up data for ease of use.
 
 Getting our relevant data
 -------------------------
@@ -32,12 +32,12 @@ head(data)
     ## 5         4.0   0.6666667  20.0 0.42300 600.000 0.1750000
     ## 6        14.4   0.7666667   9.6      NA   3.850 0.1527778
 
-This data, while mostly organized, is not "clean". We can use the `tidyr` package to accomplish this goal.
+This data, while mostly organized, is not "clean". We will go through the process of "cleaning" up this data, and cover the most used data manipulation functions provided by `tidyr`.
 
-separate()
-----------
+Splitting up multiple observations in one column.
+-------------------------------------------------
 
-In this data, the `latin_name` column has data that we can split using the `separate()` function. This way, it will be easier to find out how many *genera* fall into each diet type.
+In this data, the `order_genus` column has data that we can split using the `separate()` function. This way, it will be easier to sort the data by relevant values.
 
 ``` r
 data <- data %>%
@@ -60,8 +60,8 @@ head(data)
     ## 5         4.0   0.6666667  20.0 0.42300 600.000 0.1750000
     ## 6        14.4   0.7666667   9.6      NA   3.850 0.1527778
 
-unite()
--------
+Placing related observations together
+-------------------------------------
 
 Here, we put two columns together by using the `unite()` function. Our data originally looks like this.
 
@@ -72,7 +72,7 @@ head(data$vore)
     ## [1] carni omni  herbi omni  herbi herbi
     ## Levels: carni herbi insecti omni
 
-The formatting of this data isn't easy to understand. What we can do is create a column of the same
+The formatting of this data isn't easy to understand. What we can do is create a column of the suffix that we want to add to our observation, and then combine them using the `unite()` function.
 
 ``` r
 data$suffix = "vore"
@@ -96,10 +96,10 @@ head(data)
     ## 5 domesticated         4.0   0.6666667  20.0 0.42300 600.000 0.1750000
     ## 6         <NA>        14.4   0.7666667   9.6      NA   3.850 0.1527778
 
-spread()
---------
+Changing *long* data to *wide*
+------------------------------
 
-Looking at our `worldCountries` data frame, we find that it is extremely long and contains repeated observations
+Looking at our `worldCountries` data frame, we find that it is extremely long and contains repeated observations.
 
 ``` r
 filter(worldCountries, Country %in% levels(worldCountries$Country)[1:4])
@@ -139,7 +139,7 @@ head(worldCountriesWide)
     ## 5        Andorra        2.22            468      0.00     97.78
     ## 6         Angola        2.41        1246700      0.24     97.35
 
-In the previous example, we saw a way to convert a *long* data frame to a *wide* data frame. We can do the exact opposite with the `gather()` function. \#\#gather()
+Opposite to the `spread()` function, we can make *wide* data into *long* data using the `gather()` function.
 
 ``` r
 worldCountriesLong <- worldCountriesWide %>%
