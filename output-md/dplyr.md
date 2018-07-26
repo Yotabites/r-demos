@@ -16,7 +16,7 @@ One of the most used tools provided by `dplyr` is the pipe (`%>%`) operator. We 
 Basic functions in `dplyr`
 ==========================
 
-Let's have a quick look at our data.
+Let's have a quick look at our data. All data can be downloaded from [this](https://github.com/shiv-sundar/YotabitesRPackageDemos/tree/master/data) repository.
 
 ``` r
 head(data)
@@ -195,8 +195,8 @@ nrow(newData)
 
 Here, we can see that we removed a total of 21 rows. That's quite a bit of data that could have skewed our results!
 
-Intoducing the summarise() function
------------------------------------
+Introducing the summarise() function
+------------------------------------
 
 We want to look at the number of phones that regions have. However our data points are given to us by the country, not the region. Let's change that by using the `summarise()` function. This gives us a nice data frame of the function that we apply inside of it. Let's find out the average number of phones countries in the Eastern European region have.
 

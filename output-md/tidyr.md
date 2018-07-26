@@ -6,7 +6,7 @@ May 30, 2018
 Introduction
 ============
 
-In this demo, we will take a look at a package called `tidyr` and its most used functions. `tidyr` is a tool used for cleaning up data for ease of use.
+In this demo, we will take a look at a package called `tidyr` and its most used functions. `tidyr` is a tool used for cleaning up data for ease of use. All data can be downloaded from [this](https://github.com/shiv-sundar/YotabitesRPackageDemos/tree/master/data) repository.
 
 Getting our relevant data
 -------------------------
