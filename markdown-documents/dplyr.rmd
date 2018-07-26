@@ -6,8 +6,9 @@ output: rmarkdown::github_document
 ---
 
 ```{r setup, include=FALSE}
+#install.packages("dplyr")
 library(dplyr)
-data <- read.csv("worldCountries.csv")
+data <- read.csv("./../data/worldCountries.csv")
 knitr::opts_chunk$set(echo = TRUE)
 ```
 #Introduction
@@ -17,7 +18,7 @@ In this demo, let's pretend that our research question is whether ownership of p
 One of the most used tools provided by `dplyr` is the pipe (`%>%`) operator. We can use it to chain together multiple functions. It's kind of like saying: do this, **then** do this, **then** do this. We'll cover the use and syntax for it as we go.
 
 #Basic functions in `dplyr`
-Let's have a quick look at our data.
+Let's have a quick look at our data. All data can be downloaded from [this](https://github.com/shiv-sundar/YotabitesRPackageDemos/tree/master/data) repository.
 
 ```{r}
 head(data)
